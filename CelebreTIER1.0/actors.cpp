@@ -87,73 +87,76 @@ string actors::CreateAdjList(string v, string s, string to) {
 
 
 void actors::dijkstras(const string& start, const string& end) {
-    //map that stores previous node in shortest path
-    unordered_map<string, string> prev;
+    // Map that stores previous node and shared movie in shortest path
+    unordered_map<string, pair<string, string>> prev;
 
-    //map that stores distance from start node to each node
+    // Map that stores distance from start node to each node
     unordered_map<string, int> dist;
 
-    //priority queue manages nodes based on their distance
-    priority_queue<pair<int, string>, vector<pair<int, string> >, greater<pair<int, string> > > pq;
+    // Priority queue manages nodes based on their distance
+    priority_queue<pair<int, string>, vector<pair<int, string>>, greater<pair<int, string>>> pq;
 
-    //start node's distance set as 0 and pushed into priority queue
+    // Start node's distance set as 0 and pushed into priority queue
     dist[start] = 0;
     pq.push(make_pair(0, start));
 
-    //initializing other nodes' distance to infinity and pushing them into priority queue
+    // Initializing other nodes' distance to infinity and pushing them into priority queue
     for (const auto& actor : actorMovies) {
         pq.push(make_pair(numeric_limits<int>::max(), actor.first));
         dist[actor.first] = numeric_limits<int>::max();
     }
-    
-    //go through nodes in the priority queue
-    while (!pq.empty()) {
 
-        //get the current node, its distance, and remove it from the priority queue
+    // Go through nodes in the priority queue
+    while (!pq.empty()) {
+        // Get the current node, its distance, and remove it from the priority queue
         string curr = pq.top().second;
         int num = pq.top().first;
         pq.pop();
 
-        //if calculated disntance is greater than stored distance then skip it
+        // If calculated distance is greater than stored distance then skip it
         if (num > dist[curr]) {
             continue;
         }
 
-        //explore current node's neighbors
+        // Explore current node's neighbors
         for (const auto& neighbor : adjacencyList[curr]) {
-
-            //get the current node, the weight of the edge, and calculate new distance to the neighbor
+            // Get the current node, the weight of the edge, and calculate new distance to the neighbor
             string nextActor = neighbor.first;
             int weight = 1;
             int newNum = num + weight;
 
-            //if new disntance smaller then update the disntance and the previous node 
+            // If new distance is smaller, then update the distance and the previous node with actor-movie pair
             if (newNum < dist[nextActor]) {
                 dist[nextActor] = newNum;
-                prev[nextActor] = curr;
+                prev[nextActor] = make_pair(curr, neighbor.second); // Store previous actor and shared movie
 
-                //push the updated disntance to the priority queue
+                // Push the updated distance to the priority queue
                 pq.push(make_pair(newNum, nextActor));
             }
         }
     }
 
-    //reconstruct and print the shortest path
-    vector<string> path;
+    // Reconstruct and print the shortest path
+    vector<pair<string, string>> path;
     string curr = end;
 
-    while (!prev[curr].empty()) {
-        path.insert(path.begin(), start);
-
-        cout << "(Dijkstra) Shortest path between " << start << " and " << end << ":" << endl;
-        for (int i = 0; i < path.size(); i++) {
-            cout << path[i];
-            if (i < path.size() - 1) {
-                cout << " -> ";
-            }
-        }
-        cout << endl;
+    while (!prev[curr].first.empty()) {
+        path.insert(path.begin(), make_pair(curr, prev[curr].second));
+        curr = prev[curr].first;
     }
+    path.insert(path.begin(), make_pair(start, ""));
+
+    cout << "(Dijkstra) Shortest path between " << start << " and " << end << ":" << endl;
+    for (int i = 0; i < path.size(); i++) {
+        cout << path[i].first;
+        if (!path[i].second.empty()) {
+            cout << " (" << path[i].second << ")";
+        }
+        if (i < path.size() - 1) {
+            cout << " -> ";
+        }
+    }
+    cout << endl;
 }
 
 void actors::BFS(const string& start, const string& end) 
