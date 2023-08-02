@@ -56,6 +56,44 @@ int main() {
     }
 */
 
+    int choice;
+
+    while (true) 
+    {
+        cout << "Menu:" << endl;
+        cout << "1. BFS" << endl;
+        cout << "2. Dijkstra's" << endl;
+        cout << "3. Redo" << endl;
+        cout << "4. Exit" << endl;
+
+        cout << "Enter 1, 2, 3, or 4 to proceed";
+        cin >> choice;
+        
+        if (choice == 1) 
+        {
+            //Call BFS method
+            BFS();
+        } 
+        else if (choice == 2) 
+        {
+            //Call dijkstras? Not sure what to call this
+            dijkstras();
+        } 
+        else if (choice == 3) 
+        {
+            //Redo the loop, continue
+            continue;
+        } 
+        else if (choice == 4) 
+        {
+            //Exit the program
+            return 0;
+        } 
+        else 
+        {
+            cout << "Invalid input" << endl;
+        }
+    }
 
     return 0;
 }
