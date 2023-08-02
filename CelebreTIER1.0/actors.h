@@ -28,6 +28,7 @@ public:
     void PrintAdjList();
     string CreateAdjList(string v, string s, string to);
     vector<string> BFS(const string& start, const string& end);
+    void dijkstra(const string& start, const string& end);
 
 
 };
