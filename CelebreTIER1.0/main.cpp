@@ -90,7 +90,7 @@ int main() {
             cin >> endActor;
             
             //Call dijkstras? Not sure what to call this
-            m.dijkstra(startActor, endActor);
+            m.dijkstras(startActor, endActor);
         } 
         else if (choice == 3) 
         {
