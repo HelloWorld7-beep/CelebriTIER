@@ -156,6 +156,85 @@ void actors::dijkstra(const string& start, const string& end) {
     }
 }
 
+void actors::BFS(const string& start, const string& end) 
+{
+
+    //Adjacency list is map with key = actor, value = vector of pairs, element 1 = destination actor, element 2 = movie they share
+
+    //If the two actors are the same
+    if (start == end)
+    {
+        //Print message
+        cout << "Please pick two different actors" << endl;
+        //Return
+        return;
+    }
+
+    //BFS traversal queue
+    queue<vector<string>> queue;
+    //Set keeping track of actors visited in path, unordered because don't need order
+    unordered_set<string> visitedActors;
+
+    //Start finding the path by enqueueing the start actor
+    queue.push({start});
+    visitedActors.insert(start);
+
+    //Iterate through BFS
+    while (!queue.empty())
+    {
+        //Dequeue first element, and pop
+        vector<string> path = queue.front();
+        queue.pop();
+
+        //Last element of current path
+        string currActor = path.back();
+
+        //Find neighbors of current vector from the adjacencyList
+        vector<pair<string, string>> neighbors = adjacencyList[currActor];
+
+        for (auto neighbor : neighbors)
+        {
+            //Find the next actor
+            string nextActor = neighbor.first;
+            //Find movie that connects current actor to next
+            string nextMovie = neighbor.second;
+
+            //Checking if next actor has been visited yet
+            if (visitedActors.find(nextActor) == visitedActors.end())
+            {
+                //Inserting next actor into visited, since we're visiting it
+                visitedActors.insert(nextActor);
+
+                //Create new path
+                vector<string> currPath = path;
+
+                //Add to path
+                currPath.push_back(nextActor);
+                currPath.push_back(nextMovie);
+
+                //If the actor is reached
+                if (nextActor == end)
+                {
+                    //Print the movies, every other element is a movie
+                    for (int i = 1;  i < currPath.size(); i+=2)
+                    {
+                        cout << currPath[i] << " -> " << endl;
+                    }
+
+                    //Return, ending the method
+                    return;
+                }
+
+                //If not reached the end yet, push the current path onto the queue
+                queue.push(currPath);
+
+            }
+        }
+
+    }
+
+}
+
 
 
 
