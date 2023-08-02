@@ -27,7 +27,7 @@ public:
     bool ShareMovies(const string& name1, const string& name2);
     void PrintAdjList();
     string CreateAdjList(string v, string s, string to);
-    vector<string> BFS(const string& start, const string& end);
+    void BFS(const string& start, const string& end);
     void dijkstras(const string& start, const string& end);
 
 
