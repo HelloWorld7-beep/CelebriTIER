@@ -86,7 +86,7 @@ string actors::CreateAdjList(string v, string s, string to) {
 }
 
 
-void actors::dijkstra(const string& start, const string& end) {
+void actors::dijkstras(const string& start, const string& end) {
     //map that stores previous node in shortest path
     unordered_map<string, string> prev;
 
