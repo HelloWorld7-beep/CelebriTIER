@@ -57,6 +57,8 @@ int main() {
 */
 
     int choice;
+    string startActor;
+    string endActor;
 
     while (true) 
     {
@@ -71,13 +73,24 @@ int main() {
         
         if (choice == 1) 
         {
+            //User input first/second actor
+            cout << "Starting actor: ";
+            cin >> startActor;
+            cout << "Ending actor: ";
+            cin >> endActor;
             //Call BFS method
-            BFS();
+            m.BFS(startActor, endActor);
         } 
         else if (choice == 2) 
         {
+            //User input first/second actor
+            cout << "Starting actor: ";
+            cin >> startActor;
+            cout << "Ending actor: ";
+            cin >> endActor;
+            
             //Call dijkstras? Not sure what to call this
-            dijkstras();
+            m.dijkstra(startActor, endActor);
         } 
         else if (choice == 3) 
         {
