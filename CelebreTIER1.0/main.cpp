@@ -70,6 +70,8 @@ int main() {
 
         cout << "Enter 1, 2, 3, or 4 to proceed";
         cin >> choice;
+
+        cin.ignore();
         
         if (choice == 1) 
         {
