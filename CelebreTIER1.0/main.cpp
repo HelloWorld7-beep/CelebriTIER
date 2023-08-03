@@ -75,9 +75,10 @@ int main() {
         {
             //User input first/second actor
             cout << "Starting actor: ";
-            cin >> startActor;
+            getline(cin, startActor);
             cout << "Ending actor: ";
-            cin >> endActor;
+            getline(cin, endActor);
+            
             //Call BFS method
             m.BFS(startActor, endActor);
         } 
@@ -85,9 +86,9 @@ int main() {
         {
             //User input first/second actor
             cout << "Starting actor: ";
-            cin >> startActor;
+            getline(cin, startActor);
             cout << "Ending actor: ";
-            cin >> endActor;
+            getline(cin, endActor);
             
             //Call dijkstras? Not sure what to call this
             m.dijkstras(startActor, endActor);
