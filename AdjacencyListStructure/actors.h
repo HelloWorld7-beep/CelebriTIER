@@ -24,9 +24,7 @@ private:
     unordered_map<string, vector<pair<string, string>>> adjList;
 public:
     void InputReader(const string n);
-    void addEdges(unordered_map<string, unordered_set<string>>& actorToMovies,
-                  unordered_map<string, unordered_set<string>>& mtA,
-                  unordered_map<string, vector<pair<string, string>>>& adjList);
+    void addEdges();
     bool ShareMovies(const string& name1, const string& name2);
     void PrintAdjList();
 
