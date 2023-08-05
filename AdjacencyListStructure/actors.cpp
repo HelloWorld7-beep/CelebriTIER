@@ -60,6 +60,7 @@ void actors::addEdges(unordered_map<string, unordered_set<string>> &actorToMovie
             for (const auto &getname: actorsInMovie) {
                 if (getname != name) {
                     adjList[name].emplace_back(movieID, getname);
+                    adjList[getname].emplace_back(movieID, name);
                 }
             }
         }
