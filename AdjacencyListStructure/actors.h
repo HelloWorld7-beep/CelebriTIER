@@ -29,6 +29,8 @@ public:
                   unordered_map<string, vector<pair<string, string>>>& adjList);
     bool ShareMovies(const string& name1, const string& name2);
     void PrintAdjList();
+
+    void BFS(const string& start, const string& end);
 };
 
 
