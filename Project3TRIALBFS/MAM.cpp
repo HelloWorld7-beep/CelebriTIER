@@ -70,11 +70,9 @@ void MAM::addEdges() {
     }
 }
 
-void MAM::BFS(const string& start, const string& end)
-{
+void MAM::BFS(const string& start, const string& end) {
     //If the two actors are the same
-    if (start == end)
-    {
+    if (start == end) {
         //Print message
         cout << "Please pick two different actors" << endl;
         //Return
@@ -87,12 +85,11 @@ void MAM::BFS(const string& start, const string& end)
     unordered_set<string> visitedActors;
 
     //Start finding the path by enqueueing the start actor
-    queue.push({start});
+    queue.push({start}); // Store the starting actor in the queue
     visitedActors.insert(start);
 
     //Iterate through BFS
-    while (!queue.empty())
-    {
+    while (!queue.empty()) {
         //Dequeue first element, and pop
         vector<string> path = queue.front();
         queue.pop();
@@ -100,54 +97,49 @@ void MAM::BFS(const string& start, const string& end)
         //Last element of the current path
         string currActor = path.back();
 
-        cout << "Current actor: " << currActor << endl;
-
         //Find neighbor of the current vector from the adjacencyList
         vector<pair<string, string>> neighbors = adjList[currActor];
 
-        for (const auto& neighbor : neighbors)
-        {
+        for (const auto& neighbor : neighbors) {
             const string& nextActor = neighbor.second;
+
             //Checking if next actor has been visited yet
-            if (visitedActors.find(nextActor) == visitedActors.end())
-            {
+            if (visitedActors.find(nextActor) == visitedActors.end()) {
                 //Inserting next actor into visited since we're visiting it
                 visitedActors.insert(nextActor);
 
-                cout << "Visiting neighbor: " << nextActor << endl;
-
-                //Create a new path
+                //Create a new path1
                 vector<string> currPath = path;
-
                 //Add to path
+                currPath.push_back(neighbor.first); // Add the movie to the path
                 currPath.push_back(nextActor);
-                currPath.push_back(neighbor.first);
 
                 //If the actor is reached
-                if (nextActor == end)
-                {
+                if (nextActor == end) {
                     cout << "Path found between " << start << " and " << end << ": ";
 
-                    //Print the movies, every other element is a movie
-                    for (int i = currPath.size() - 2; i >= 1; i -= 2)
-                    {
-                        cout << currPath[i] << " -> ";
+                    //Print the list of movies and actors
+                    for (int i = 0; i < currPath.size(); ++i) {
+                        if (i % 2 == 0) {
+                            //Print the actor
+                            cout << currPath[i];
+                        }
+                        else {
+                            //Print the movie
+                            cout << " (" << currPath[i] << ") -> ";
+                        }
                     }
 
-                    // Print the last actor without "->" after it
-                    cout << currPath.back() << endl;
-                    
-                    //Return
+                    cout << endl;
                     return;
                 }
 
-                //If not reached the end yet, push the current path onto the queue
                 queue.push(currPath);
             }
         }
     }
 
-    //If no path is found, print a message
+    //If no path found, this is printed
     cout << "No path found between " << start << " and " << end << endl;
 }
 
@@ -157,7 +149,7 @@ void MAM::dijkstras(const string &start, const string &end) {
     // Map that stores distance from start node to each node
     unordered_map<string, int> dist;
     // Map that stores previous node and shared movie in the shortest path
-    unordered_map<string, string> prev;
+    unordered_map<string, pair<string, string>> prev; // <Node, <Previous Node, Movie>>
 
     // Initialize dists and add starting actor to the priority queue
     for (const auto &entry: adjList) {
@@ -191,7 +183,7 @@ void MAM::dijkstras(const string &start, const string &end) {
             // If new dist is smaller, then update the dist and the previous node with actor-movie pair
             if (num + weight < dist[nextActor]) {
                 dist[nextActor] = num + weight;
-                prev[nextActor] = curr;
+                prev[nextActor] = make_pair(curr, movie);
 
                 // Push the updated dist to the priority queue
                 pq.push({dist[nextActor], nextActor});
@@ -199,27 +191,28 @@ void MAM::dijkstras(const string &start, const string &end) {
         }
     }
 
-    // Print shortest path and shared movies
-    vector<string> path;
-    string actor = end;
-    while (!actor.empty()) {
-        path.push_back(actor);
-        actor = prev[actor];
-    }
-    reverse(path.begin(), path.end());
+    // Reconstruct and print the shortest path with movies
+    if (dist[end] != numeric_limits<int>::max()) {
+        cout << "(Dijkstra) Shortest path between " << start << " and " << end << ":\n";
 
-    // Reconstruct and print the shortest path
-    cout << "(Dijkstra) Shortest path between " << start << " and " << end << ":\n";
-    for (int i = 0; i < path.size(); ++i) {
-        if (i > 0) {
-            cout << " -> ";
+        // Reconstruct the path
+        string actor = end;
+        vector<pair<string, string>> path;
+        while (actor != start) {
+            auto prevNode = prev[actor];
+            path.push_back(prevNode);
+            actor = prevNode.first;
         }
-        cout << path[i];
 
-        if (i < path.size() - 1 && !ShareMovies(path[i], path[i + 1])) {
-            cout << " (" << ShareMovies(path[i], path[i + 1]) << ")";
+        // Print the path
+        for (int i = path.size() - 1; i >= 0; --i) {
+            if (i < path.size() - 1) {
+                cout << " -> ";
+            }
+            cout << path[i].first << " (" << path[i].second << ")";
         }
+        cout << " -> " << end << endl;
+    } else {
+        cout << "No path found between " << start << " and " << end << endl;
     }
-    cout << endl;
-
 }
