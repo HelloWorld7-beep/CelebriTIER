@@ -10,8 +10,6 @@ void ActorMovie::InputReader(const string n) {
         while (getline(file, line)) {
             istringstream iss(line);
             string name, movieId;
-
-
             if (getline(iss, name, ',')) { // Use '\t' for tab separation, or ',' for comma
                 while (getline(iss, movieId, ',')) {
                     actorsToMovies[name].insert(movieId);
@@ -25,11 +23,10 @@ void ActorMovie::InputReader(const string n) {
 }
 
 bool ActorMovie::ShareMovies(const string &name1, const string &name2) {
-//boolean to see if two MAM share a movie this might come in handy for the actual building of algorithms
+//boolean to see if two actors that share a movie
     if(actorsToMovies.count(name1) && actorsToMovies.count(name2)) {
         unordered_set<string>& movieList1 = actorsToMovies[name1];
         unordered_set<string>& movieList2 = actorsToMovies[name2];
-
         for(const auto& it : movieList1) {
             if(movieList2.find(it) != movieList2.end()) {
                 return true;
@@ -39,7 +36,7 @@ bool ActorMovie::ShareMovies(const string &name1, const string &name2) {
     return false;
 }
 
-
+//extra printing function for adjacency list
 void ActorMovie::PrintAdjList() {
     for (const auto &entry: adjList) {
         const string &node = entry.first;
@@ -53,15 +50,15 @@ void ActorMovie::PrintAdjList() {
     }
 }
 
-
+//edges are added by string to save time and space
 void ActorMovie::addEdges(const string& a) {
     const string &name = a;
-    const unordered_set<string> &movieIdSet = actorsToMovies[a];
-    for (const string &movieID: movieIdSet) {
-        const auto &MAMInMovie = moviesToActors[movieID]; // Directly access MAM for the current movie
-        for (const auto &getname: MAMInMovie) {
-            if (getname != name) {
-                adjList[name].emplace_back(movieID, getname);
+    const unordered_set<string> &movieIdSet = actorsToMovies[a]; //access the id set that is attatched to this actor
+    for (const string &movieID: movieIdSet) { //circulate through the set for each movie ID
+        const auto &aInMovie = moviesToActors[movieID]; // Directly access the set that has the actors in that movie id
+        for (const auto &getname: aInMovie) { //get the name for the actor in that movie id
+            if (getname != name) { //as long as the getname does not equal the original name 
+                adjList[name].emplace_back(movieID, getname); //add in undirected paths between the two actors that share the same movie
                 adjList[getname].emplace_back(movieID, name);
             }
         }
@@ -219,6 +216,7 @@ void ActorMovie::dijkstras(const string &start, const string &end) {
     }
 }
 
+//print for chechking the two maps besides the adjacency list
 void ActorMovie::printOtherMaps() {
     for(const auto& it: actorsToMovies) {
         cout << it.first << " ";
