@@ -21,17 +21,6 @@ int main() {
     while (true)
     {
 
-        cout << "Menu:" << endl;
-        cout << "1. BFS" << endl;
-        cout << "2. Dijkstra's" << endl;
-        cout << "3. Redo" << endl;
-        cout << "4. Check if two actors share a movie" << endl;
-        cout << "5. Exit" << endl;
-
-        cout << "Enter 1, 2, 3, or 4 to proceed" << endl;
-        cin >> choice;
-
-        cin.ignore();
         cout << "o - - - - - - - - - - - - - - - - - - - o " << endl;
         cout << "| ------------------------------------- |" << endl;
         cout << "|  Menu:                                |" << endl;
