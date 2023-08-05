@@ -129,11 +129,14 @@ void MAM::BFS(const string& start, const string& end)
                     cout << "Path found between " << start << " and " << end << ": ";
 
                     //Print the movies, every other element is a movie
-                    for (int i = 1; i < currPath.size(); i += 2)
+                    for (int i = currPath.size() - 2; i >= 1; i -= 2)
                     {
                         cout << currPath[i] << " -> ";
                     }
-                    cout << endl;
+
+                    // Print the last actor without "->" after it
+                    cout << currPath.back() << endl;
+                    
                     //Return
                     return;
                 }
