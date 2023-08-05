@@ -141,6 +141,12 @@ void ActorMovie::BFS(const string& start, const string& end)
 }
 
 void ActorMovie::dijkstras(const string &start, const string &end) {
+    if (start == end) {
+        //Print message
+        cout << "Please pick two different actors" << endl;
+        //Return
+        return;
+    }
     addEdges(start);
     addEdges(end);
     // Priority queue manages nodes based on their distance
