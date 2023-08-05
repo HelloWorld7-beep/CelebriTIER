@@ -22,14 +22,21 @@ void actors::InputReader(const string n) {
             }
         }
 
-        addEdges(actorsToMovies, moviesToActors, adjList);
+        addEdges();
     }
 }
 
 bool actors::ShareMovies(const string &name1, const string &name2) {
 //boolean to see if two actors share a movie this might come in handy for the actual building of algorithms
-    if (actorsToMovies.at(name1) == actorsToMovies.at(name2)) {
-        return true;
+    if(actorsToMovies.count(name1) && actorsToMovies.count(name2)) {
+        unordered_set<string>& movieList1 = actorsToMovies[name1];
+        unordered_set<string>& movieList2 = actorsToMovies[name2];
+
+        for(auto it : movieList1) {
+            if(movieList2.find(it) != movieList2.end()) {
+                return true;
+            }
+        }
     }
     return false;
 }
@@ -49,15 +56,13 @@ void actors::PrintAdjList() {
 }
 
 
-void actors::addEdges(unordered_map<string, unordered_set<string>> &actorToMovies,
-                      unordered_map<string, unordered_set<string>> &mtA,
-                      unordered_map<string, vector<pair<string, string>>> &adjList) {
-    for (const auto &it: actorToMovies) {
+void actors::addEdges() {
+    for (const auto &it: actorsToMovies) {
         const string &name = it.first;
         const unordered_set<string> &movieIdSet = it.second;
         for (const string &movieID: movieIdSet) {
-            const auto &actorsInMovie = mtA[movieID]; // Directly access actors for the current movie
-            for (const auto &getname: actorsInMovie) {
+            const auto &actorInMovie = moviesToActors[movieID]; // Directly access MAM for the current movie
+            for (const auto &getname: actorInMovie) {
                 if (getname != name) {
                     adjList[name].emplace_back(movieID, getname);
                     adjList[getname].emplace_back(movieID, name);
