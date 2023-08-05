@@ -144,3 +144,74 @@ void actors::BFS(const string& start, const string& end)
     //If no path is found, print a message
     cout << "No path found between " << start << " and " << end << endl;
 }
+void actors::dijkstras(const string& start, const string& end) {
+    // Priority queue manages nodes based on their distance
+     priority_queue<pair<int, string>, vector<pair<int, string>>, greater<pair<int, string>>> pq;
+    // Map that stores distance from start node to each node
+     unordered_map<string, int> dist;
+    // Map that stores previous node and shared movie in shortest path
+    unordered_map<string, string> prev;
+
+    // Initialize dists and add starting actor to the priority queue
+    for (const auto &entry: adjList) {
+        const string &actor = entry.first;
+        dist[actor] = numeric_limits<int>::max();
+    }
+
+    // Start node's dist set as 0 and pushed into priority queue
+    dist[start] = 0;
+    pq.push({0, start});
+
+    // Go through nodes in the priority queue
+    while (!pq.empty()) {
+        // Get the current node, its dist, and remove it from the priority queue
+        string curr = pq.top().second;
+        int num = pq.top().first;
+        pq.pop();
+
+        // If calculated dist is greater than stored dist then skip it
+        if (num > dist[curr]) {
+            continue;
+        }
+
+        // Explore current node's neighbors
+        for (const auto &neighbor: adjList[curr]) {
+            // Get the current node, the weight of the edge, and calculate new dist to the neighbor
+            const string &movie = neighbor.first;
+            const string &nextActor = neighbor.second;
+            int weight = ShareMovies(curr, nextActor) ? 1
+                                                              : numeric_limits<int>::max(); // Weight is 1 if they share a movie, infinite otherwise
+            // If new dist is smaller, then update the dist and the previous node with actor-movie pair
+            if (num + weight < dist[nextActor]) {
+                dist[nextActor] = num + weight;
+                prev[nextActor] = curr;
+
+                // Push the updated dist to the priority queue
+                pq.push({dist[nextActor], nextActor});
+            }
+        }
+    }
+
+    // Print shortest path and shared movies
+    vector<string> path;
+    string actor = end;
+    while (!actor.empty()) {
+        path.push_back(actor);
+        actor = prev[actor];
+    }
+    reverse(path.begin(), path.end());
+
+    // Reconstruct and print the shortest path
+    cout << "(Dijkstra) Shortest path between " << start << " and " << end << ":\n";
+    for (int i = 0; i < path.size(); ++i) {
+        if (i > 0) {
+            cout << " -> ";
+        }
+        cout << path[i];
+
+        if (i < path.size() - 1 && !ShareMovies(path[i], path[i + 1])) {
+            cout << " (" << ShareMovies(path[i], path[i + 1]) << ")";
+        }
+    }
+    cout << endl;
+}
