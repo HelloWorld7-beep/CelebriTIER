@@ -20,6 +20,7 @@ int main() {
 
     while (true)
     {
+
         cout << "Menu:" << endl;
         cout << "1. BFS" << endl;
         cout << "2. Dijkstra's" << endl;
@@ -31,6 +32,26 @@ int main() {
         cin >> choice;
 
         cin.ignore();
+        cout << "o - - - - - - - - - - - - - - - - - - - o " << endl;
+        cout << "| ------------------------------------- |" << endl;
+        cout << "|  Menu:                                |" << endl;
+        cout << "|                                       |" << endl;
+        cout << "|  1. BFS                               |" << endl;
+        cout << "|  2. Dijkstra's                        |" << endl;
+        cout << "|  3. Redo                              |" << endl;
+        cout << "|  4. Check if two actors share a movie"|" << endl;
+        cout << "|  5. Exit                              |" << endl;
+        cout << "| ------------------------------------- |" << endl;
+        cout << "o - - - - - - - - - - - - - - - - - - - o" << endl;
+
+        cout << endl;
+
+        cout << "Please enter 1, 2, 3, 4, or 5 to proceed: ";
+        cin >> choice;
+
+        cin.ignore();
+
+        cout << endl;
 
         if (choice == 1)
         {
@@ -39,6 +60,8 @@ int main() {
             getline(cin, startActor);
             cout << "Ending actor: ";
             getline(cin, endActor);
+
+            cout << endl;
 
             //Call BFS method
             m.BFS(startActor, endActor);
@@ -50,6 +73,8 @@ int main() {
             getline(cin, startActor);
             cout << "Ending actor: ";
             getline(cin, endActor);
+
+            cout << endl;
 
             //Call dijkstras? Not sure what to call this
             m.dijkstras(startActor, endActor);
