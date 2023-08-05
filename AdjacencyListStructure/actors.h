@@ -31,6 +31,8 @@ public:
     void PrintAdjList();
 
     void BFS(const string& start, const string& end);
+    void dijkstras(const string& start, const string& end);
+
 };
 
 
