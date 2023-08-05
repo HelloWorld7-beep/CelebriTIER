@@ -39,7 +39,7 @@ int main() {
         cout << "|  1. BFS                               |" << endl;
         cout << "|  2. Dijkstra's                        |" << endl;
         cout << "|  3. Redo                              |" << endl;
-        cout << "|  4. Check if two actors share a movie"|" << endl;
+        cout << "|  4. Check if two actors share a movie |" << endl;
         cout << "|  5. Exit                              |" << endl;
         cout << "| ------------------------------------- |" << endl;
         cout << "o - - - - - - - - - - - - - - - - - - - o" << endl;
